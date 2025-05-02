@@ -7,18 +7,10 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController(DataContext context, ILogger<UsersController> logger) : BaseApiController
     {
-        private readonly DataContext _context;
-        private readonly ILogger<UsersController> _logger;
-
-        public UsersController(DataContext context, ILogger<UsersController> logger)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+        private readonly DataContext _context = context ?? throw new ArgumentNullException(nameof(context));
+        private readonly ILogger<UsersController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
