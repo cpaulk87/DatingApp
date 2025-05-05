@@ -1,5 +1,7 @@
 ﻿using API.Data;
 using API.Entities;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ namespace API.Controllers
         private readonly DataContext _context = context ?? throw new ArgumentNullException(nameof(context));
         private readonly ILogger<UsersController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
         {
@@ -21,6 +24,7 @@ namespace API.Controllers
             return Ok(users);
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
